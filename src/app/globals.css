@@ -1,0 +1,255 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* Design tokens (Tailwind v4 CSS-first theme)                         */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans: "Google Sans Flex Variable", "Inter Variable", ui-sans-serif,
+    system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Neutrals */
+  --color-ink: #202124;
+  --color-muted: #5f6368;
+  --color-line: #dadce0;
+  --color-surface: #f1f3f4;
+
+  /* Brand */
+  --color-brand: #1a73e8;
+  --color-brand-deep: #1558b0;
+  --color-brand-soft: #e8f0fe;
+  --color-action: #4285f4;
+
+  /* Google palette */
+  --color-g-red: #ea4335;
+  --color-g-yellow: #fbbc04;
+  --color-g-green: #34a853;
+
+  /* Soft section backgrounds */
+  --color-cream: #fef7e0;
+  --color-mint: #e6f4ea;
+
+  --radius-card: 1.5rem;
+
+  --shadow-soft: 0 1px 2px rgb(60 64 67 / 0.08), 0 8px 24px -12px rgb(60 64 67 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(60 64 67 / 0.08), 0 20px 40px -20px rgb(26 115 232 / 0.35);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #ffffff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Motion primitives that don't need JavaScript                        */
+/* ------------------------------------------------------------------ */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 16px)) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dialog-content-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 12px)) scale(0.98);
+  }
+}
+
+.dialog-overlay[data-state="open"] {
+  animation: dialog-overlay-in 0.2s ease-out both;
+}
+.dialog-overlay[data-state="closed"] {
+  animation: dialog-overlay-out 0.15s ease-in both;
+}
+.dialog-content[data-state="open"] {
+  animation: dialog-content-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.dialog-content[data-state="closed"] {
+  animation: dialog-content-out 0.15s ease-in both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .page-enter,
+  .dialog-overlay,
+  .dialog-content {
+    animation-duration: 0.01ms !important;
+  }
+  /* Endless decorative loops are switched off, not just shortened. */
+  .float,
+  .sparkle,
+  .hero-blob {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Decorative loops. Pure `transform` keyframes run on the compositor   */
+/* thread, so they cost the main thread nothing while the page idles.   */
+/* (Driving the same motion from JS repaints the layer every frame.)    */
+/* ------------------------------------------------------------------ */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--float-rot, 0deg));
+  }
+  50% {
+    transform: translate3d(0, calc(var(--float-dist, 8px) * -1), 0) rotate(var(--float-rot-end, 1.5deg));
+  }
+}
+.float {
+  animation: float-y var(--float-dur, 6s) ease-in-out var(--float-delay, 0s) infinite;
+  will-change: transform;
+}
+
+@keyframes sparkle-spin {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(12deg) scale(1.06);
+  }
+  75% {
+    transform: rotate(-12deg) scale(1.06);
+  }
+}
+.sparkle {
+  animation: sparkle-spin 9s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes hero-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(var(--dx1), var(--dy1), 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(var(--dx2), var(--dy2), 0) scale(0.96);
+  }
+}
+.hero-blob {
+  animation: hero-drift var(--dur, 24s) ease-in-out infinite;
+  will-change: transform;
+}
+/* The banner pauses its loops while it is scrolled out of view. */
+[data-paused="true"] .hero-blob {
+  animation-play-state: paused;
+}
+
+@keyframes hero-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.hero-tiles {
+  animation: hero-fade-in 0.9s ease-out 0.1s both;
+  /* Own compositor layer: lighting tiles repaints this layer only. */
+  transform: translateZ(0);
+  contain: layout paint style;
+}
+
+/* Colour fields behind the hero dot grid: compositor-only drift that pauses
+   off-screen (data-paused on the banner) and stops for reduced motion. */
+@keyframes hero-drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1.08);
+  }
+}
+
+.hero-blob {
+  animation: hero-drift var(--dur, 12s) ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+[data-paused="true"] .hero-blob {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-blob {
+    animation: none;
+  }
+}
+
+/* Primary nav: until the sliding pill has been placed (before hydration), the
+   active link carries the highlight itself so there is never a blank state. */
+nav[data-pill]:not([data-ready]) a[aria-current="page"] {
+  background: var(--color-brand-soft);
+}
