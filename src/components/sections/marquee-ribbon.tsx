@@ -20,7 +20,7 @@ import {
  *
  * - Always drifts at a calm base speed, even when the page is still.
  * - Scroll speed adds to that speed; scrolling up reverses the direction.
- * - Phrases are coloured in Google blue, red, yellow and green (no separators).
+ * - White phrases on a Google-blue band (no separators).
  * - Work stops while the ribbon is off-screen or reduced motion is requested.
  *
  * The motion is a transform driven from requestAnimationFrame through motion
@@ -50,8 +50,9 @@ interface BandConfig {
 }
 
 const BAND: BandConfig = {
-  background: "#202124",
-  colors: ["#8AB4F8", "#F28B82", "#FDD663", "#81C995"],
+  // White on #1A73E8 is 4.5:1 (WCAG AA); the text is large and bold on top of that.
+  background: "#1A73E8",
+  colors: ["#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"],
   offset: 0,
   speed: -0.55,
 };
@@ -85,7 +86,7 @@ function Band({
 
   return (
     <div
-      className="overflow-hidden py-3 shadow-[0_18px_36px_-16px_rgb(32_33_36/0.55)] sm:py-4"
+      className="overflow-hidden py-3 shadow-[0_16px_32px_-16px_rgb(26_115_232/0.55)] sm:py-4"
       style={{ background: config.background }}
     >
       <motion.div className="flex w-max will-change-transform" style={{ x }}>

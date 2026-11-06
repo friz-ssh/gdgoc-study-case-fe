@@ -10,6 +10,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Emphasis } from "@/components/shared/emphasis";
 import { ArrowLink, Eyebrow, SectionHeading } from "@/components/shared/section-heading";
 import { HeroBanner } from "@/components/sections/hero-banner";
+import { HeroArt } from "@/components/shared/hero-art";
 import { MarqueeRibbon } from "@/components/sections/marquee-ribbon";
 import { FaqSection } from "@/components/sections/faq-section";
 import { FormatsSection } from "@/components/sections/formats-section";
@@ -30,51 +31,56 @@ export default function HomePage() {
       {/* ------------------------------ hero ------------------------------ */}
       <section className="flex flex-col">
         <HeroBanner>
-          <Reveal y={16}>
-            <Eyebrow className="justify-center text-ink/70">GDGoC UGM • 2026/2027</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="mt-4 text-balance text-[clamp(2.5rem,6.6vw,5rem)] leading-[1.02] font-semibold tracking-tight text-ink">
-              Big ideas.
-              <br />
-              <Emphasis color="blue">Built together.</Emphasis>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-ink/75 sm:text-xl">
-              A place for curious minds at Universitas Gadjah Mada to learn, connect, and build
-              technology that matters.
-            </p>
-          </Reveal>
-          <Reveal
-            delay={0.24}
-            className="mt-6 flex w-full max-w-sm flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:justify-center"
-          >
-            <Button asChild size="lg">
-              <Link href="/overview#tracks">
-                Find your learning track
-                <ArrowRight aria-hidden="true" className="group-hover/button:translate-x-0.5" />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="soft">
-              <Link href="/about">
-                Get to know us
-                <ArrowRight aria-hidden="true" className="group-hover/button:translate-x-0.5" />
-              </Link>
-            </Button>
-          </Reveal>
-          <Reveal
-            delay={0.32}
-            className="mt-6 flex flex-col items-center justify-center gap-2.5 text-center text-sm text-ink/70 sm:flex-row sm:gap-3"
-          >
-            <span aria-hidden="true" className="flex gap-1">
-              <span className="size-3 rounded-full bg-g-red" />
-              <span className="size-3 rounded-full bg-g-yellow" />
-              <span className="size-3 rounded-full bg-g-green" />
-              <span className="size-3 rounded-full bg-action" />
-            </span>
-            Different backgrounds. A shared curiosity.
-          </Reveal>
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8">
+            <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+              <Reveal y={16}>
+                <Eyebrow className="justify-center text-ink/70 lg:justify-start">GDGoC UGM • 2026/2027</Eyebrow>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h1 className="mt-4 text-balance text-[clamp(2.5rem,6.6vw,5rem)] leading-[1.02] font-semibold tracking-tight text-ink">
+                  Big ideas.
+                  <br />
+                  <Emphasis color="blue">Built together.</Emphasis>
+                </h1>
+              </Reveal>
+              <Reveal delay={0.16}>
+                <p className="mx-auto mt-5 max-w-xl lg:mx-0 text-pretty text-lg leading-relaxed text-ink/75 sm:text-xl">
+                  A place for curious minds at Universitas Gadjah Mada to learn, connect, and build
+                  technology that matters.
+                </p>
+              </Reveal>
+              <Reveal
+                delay={0.24}
+                className="mx-auto mt-6 flex w-full max-w-sm flex-col gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:justify-center lg:mx-0 lg:justify-start"
+              >
+                <Button asChild size="lg">
+                  <Link href="/overview#tracks">
+                    Find your learning track
+                    <ArrowRight aria-hidden="true" className="group-hover/button:translate-x-0.5" />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="soft">
+                  <Link href="/about">
+                    Get to know us
+                    <ArrowRight aria-hidden="true" className="group-hover/button:translate-x-0.5" />
+                  </Link>
+                </Button>
+              </Reveal>
+              <Reveal
+                delay={0.32}
+                className="mt-6 flex flex-col items-center justify-center gap-2.5 text-center text-sm text-ink/70 sm:flex-row sm:gap-3 lg:justify-start lg:text-left"
+              >
+                <span aria-hidden="true" className="flex gap-1">
+                  <span className="size-3 rounded-full bg-g-red" />
+                  <span className="size-3 rounded-full bg-g-yellow" />
+                  <span className="size-3 rounded-full bg-g-green" />
+                  <span className="size-3 rounded-full bg-action" />
+                </span>
+                Different backgrounds. A shared curiosity.
+              </Reveal>
+            </div>
+            <HeroArt />
+          </div>
         </HeroBanner>
 
         <MarqueeRibbon />

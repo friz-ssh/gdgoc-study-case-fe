@@ -53,11 +53,41 @@ interface Blob {
   duration: number;
 }
 
+// Round on phones (sized in vw so a tall, narrow banner does not stretch them
+// into vertical stripes), wide ovals from md up.
 const BLOBS: Blob[] = [
-  { className: "-top-[40%] -left-[8%] h-[110%] w-[42%]", color: "#F28B82", dx: "10%", dy: "12%", duration: 11 },
-  { className: "-top-[36%] -right-[8%] h-[115%] w-[44%]", color: "#8AB4F8", dx: "-9%", dy: "9%", duration: 13 },
-  { className: "-bottom-[50%] left-[4%] h-[115%] w-[42%]", color: "#FDD663", dx: "12%", dy: "-10%", duration: 12 },
-  { className: "-right-[4%] -bottom-[46%] h-[110%] w-[42%]", color: "#81C995", dx: "-12%", dy: "-12%", duration: 14 },
+  {
+    className:
+      "size-[78vw] -top-[6%] -left-[30%] md:size-auto md:h-[110%] md:w-[42%] md:-top-[40%] md:-left-[8%]",
+    color: "#F28B82",
+    dx: "10%",
+    dy: "12%",
+    duration: 11,
+  },
+  {
+    className:
+      "size-[80vw] top-[4%] -right-[36%] md:size-auto md:h-[115%] md:w-[44%] md:-top-[36%] md:-right-[8%]",
+    color: "#8AB4F8",
+    dx: "-9%",
+    dy: "9%",
+    duration: 13,
+  },
+  {
+    className:
+      "size-[76vw] bottom-[4%] -left-[28%] md:size-auto md:h-[115%] md:w-[42%] md:-bottom-[50%] md:left-[4%]",
+    color: "#FDD663",
+    dx: "12%",
+    dy: "-10%",
+    duration: 12,
+  },
+  {
+    className:
+      "size-[78vw] -bottom-[4%] -right-[32%] md:size-auto md:h-[110%] md:w-[42%] md:-right-[4%] md:-bottom-[46%]",
+    color: "#81C995",
+    dx: "-12%",
+    dy: "-12%",
+    duration: 14,
+  },
 ];
 
 export function HeroBanner({
@@ -291,7 +321,7 @@ export function HeroBanner({
       {/* 2 — scrim keeps the copy legible */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_48%_62%_at_50%_50%,rgb(255_255_255/0.82),rgb(255_255_255/0)_80%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_48%_62%_at_50%_50%,rgb(255_255_255/0.82),rgb(255_255_255/0)_80%)] lg:bg-[radial-gradient(ellipse_42%_72%_at_28%_50%,rgb(255_255_255/0.85),rgb(255_255_255/0)_80%)]"
       />
 
       {/* 3 — dot grid */}
@@ -302,7 +332,7 @@ export function HeroBanner({
       />
 
       {/* 4 — copy */}
-      <Container className="relative z-10 flex flex-col items-center pt-12 pb-20 text-center sm:pt-16 sm:pb-24 lg:pt-20 lg:pb-28">
+      <Container className="relative z-10 pt-12 pb-20 sm:pt-16 sm:pb-24 lg:pt-16 lg:pb-28">
         {children}
       </Container>
     </div>
