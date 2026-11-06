@@ -30,7 +30,16 @@ export function hasIllustration(id: string): id is IllustrationId {
  * shadow filters inside the file cost nothing per frame. `unoptimized` keeps
  * the markup identical on server and client.
  */
-export function Illustration({ id, className }: { id: IllustrationId; className?: string }) {
+export function Illustration({
+  id,
+  className,
+  priority = false,
+}: {
+  id: IllustrationId;
+  className?: string;
+  /** Preload: set for art that is part of the first screen (helps LCP). */
+  priority?: boolean;
+}) {
   const art = ART[id];
   return (
     <Image
@@ -39,6 +48,7 @@ export function Illustration({ id, className }: { id: IllustrationId; className?
       width={art.width}
       height={art.height}
       unoptimized
+      priority={priority}
       className={cn("h-auto w-full select-none", className)}
       style={FEATHER}
     />
