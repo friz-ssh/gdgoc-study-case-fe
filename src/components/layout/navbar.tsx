@@ -49,39 +49,59 @@ export function Navbar() {
   const pillWidth = useMotionValue(0);
   const pillOpacity = useMotionValue(0);
 
-  const placePill = React.useCallback(() => {
-    const nav = navRef.current;
-    if (!nav) return;
-    const link = nav.querySelector<HTMLElement>('a[aria-current="page"]');
-    if (!link) {
-      pillOpacity.set(0);
-      return;
-    }
-    pillOpacity.set(1);
-    if (!placed.current || reduceMotion) {
-      pillX.set(link.offsetLeft);
-      pillWidth.set(link.offsetWidth);
-      placed.current = true;
-      nav.dataset.ready = "true";
-      return;
-    }
-    const spring = { type: "spring", stiffness: 420, damping: 36 } as const;
-    animate(pillX, link.offsetLeft, spring);
-    animate(pillWidth, link.offsetWidth, spring);
-  }, [pillOpacity, pillWidth, pillX, reduceMotion]);
+  const lastPath = React.useRef(pathname);
 
-  // Move to the active link whenever the route (or the link list) changes.
+  /**
+   * `animated` is true only for a real route change. Every other re-measure
+   * (links arriving from the API, web fonts changing text widths, a resize)
+   * snaps instantly: animating those made the pill visibly slide from a stale
+   * position on refresh, so it looked as if the neighbouring link got the pill.
+   */
+  const placePill = React.useCallback(
+    (animated: boolean) => {
+      const nav = navRef.current;
+      if (!nav) return;
+      const link = nav.querySelector<HTMLElement>('a[aria-current="page"]');
+      if (!link) {
+        pillOpacity.set(0);
+        return;
+      }
+      pillOpacity.set(1);
+      if (!animated || !placed.current || reduceMotion) {
+        pillX.jump(link.offsetLeft);
+        pillWidth.jump(link.offsetWidth);
+        placed.current = true;
+        nav.dataset.ready = "true";
+        return;
+      }
+      const spring = { type: "spring", stiffness: 420, damping: 36 } as const;
+      animate(pillX, link.offsetLeft, spring);
+      animate(pillWidth, link.offsetWidth, spring);
+    },
+    [pillOpacity, pillWidth, pillX, reduceMotion],
+  );
+
+  // Route change: slide. Link list change: snap.
   React.useEffect(() => {
-    placePill();
+    const routeChanged = lastPath.current !== pathname;
+    lastPath.current = pathname;
+    placePill(routeChanged);
   }, [placePill, pathname, items]);
 
-  // Keep the pill aligned when fonts load or the viewport is resized.
+  // Keep the pill aligned when fonts load or the viewport is resized (always a snap).
   React.useEffect(() => {
     const nav = navRef.current;
     if (!nav) return;
-    const observer = new ResizeObserver(() => placePill());
+    const observer = new ResizeObserver(() => placePill(false));
     observer.observe(nav);
-    return () => observer.disconnect();
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) placePill(false);
+    });
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+    };
   }, [placePill]);
 
   // Lock page scroll and support Escape while the mobile menu is open.
