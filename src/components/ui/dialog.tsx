@@ -31,9 +31,13 @@ function DialogContent({
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
+        // Centering lives in the dialog-content keyframes (globals.css). Do not add
+        // Tailwind translate utilities here: they use the separate `translate`
+        // property and would stack with the animated `transform`, pushing the box
+        // half a width to the left.
         className={cn(
           "dialog-content fixed top-1/2 left-1/2 z-[61] w-[calc(100%-2rem)] max-w-xl",
-          "max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-y-auto",
+          "max-h-[calc(100dvh-2rem)] overflow-y-auto",
           "rounded-[1.75rem] border border-line bg-white p-6 shadow-2xl sm:p-8",
           className,
         )}
