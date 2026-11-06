@@ -26,18 +26,13 @@ export function TrackVisual({ track, className }: { track: Track; className?: st
         className="absolute -top-10 -right-8 size-44 rounded-full opacity-40 blur-3xl"
         style={{ backgroundColor: color }}
       />
-      <motion.div
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="relative size-60"
-        style={{ color }}
-      >
+      <div className="relative size-60" style={{ color }}>
         {hasIllustration(track.id) ? (
           <Illustration id={track.id} className="h-full w-full object-contain" />
         ) : (
           <EntityIcon id={track.id} className="size-full p-6" strokeWidth={1.5} />
         )}
-      </motion.div>
+      </div>
     </div>
   );
 }
