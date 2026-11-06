@@ -30,7 +30,8 @@ function Float({
   return (
     <motion.div
       className={className}
-      animate={{ y: [0, -distance, 0], rotate: [rotate, rotate + 1.5, rotate] }}
+      style={{ rotate, willChange: "transform" }}
+      animate={{ y: [0, -distance, 0] }}
       transition={{ duration, delay, repeat: Infinity, ease: "easeInOut" }}
     >
       {children}
@@ -55,7 +56,7 @@ function GlassTile({
   return (
     <div
       className={cn(
-        "grid place-items-center rounded-[2rem] border border-white/70 bg-gradient-to-br backdrop-blur-md",
+        "grid place-items-center rounded-[2rem] border border-white/70 bg-gradient-to-br [backface-visibility:hidden]",
         tints[tint],
         className,
       )}
@@ -75,7 +76,7 @@ function Chip({
   return (
     <div
       className={cn(
-        "rounded-xl border border-white/80 bg-white/90 px-3.5 py-2 text-xs font-medium text-ink shadow-soft backdrop-blur sm:text-sm",
+        "rounded-xl border border-white/80 bg-white/90 px-3.5 py-2 text-xs font-medium text-ink shadow-soft sm:text-sm",
         className,
       )}
     >
