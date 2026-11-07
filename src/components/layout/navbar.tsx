@@ -86,6 +86,12 @@ export function Navbar() {
     const routeChanged = lastPath.current !== pathname;
     lastPath.current = pathname;
     placePill(routeChanged);
+    if (!routeChanged) return;
+    // Safety net: if the main thread was busy (a heavy page mounting, dev-mode
+    // compiling) or the spring was interrupted, make sure the pill ends on the
+    // active link instead of staying on the previous one.
+    const settle = window.setTimeout(() => placePill(false), 700);
+    return () => window.clearTimeout(settle);
   }, [placePill, pathname, items]);
 
   // Keep the pill aligned when fonts load or the viewport is resized (always a snap).
